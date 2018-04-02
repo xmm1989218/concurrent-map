@@ -49,6 +49,18 @@ func (m ConcurrentMap) Set(key string, value interface{}) {
 	shard.Unlock()
 }
 
+// Sets the given value under the specified key, and return old value.
+// If ok mean update, otherwise mean insert
+func (m ConcurrentMap) SetAndGet(key string, value interface{}) (interface{}, bool) {
+	// Get map shard.
+	shard := m.GetShard(key)
+	shard.Lock()
+	v, ok := shard.items[key]
+	shard.items[key] = value
+	shard.Unlock()
+	return v, ok
+}
+
 // Callback to return new element to be inserted into the map
 // It is called while lock is held, therefore it MUST NOT
 // try to access other keys in same map, as it can lead to deadlock since

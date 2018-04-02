@@ -36,6 +36,19 @@ func TestInsert(t *testing.T) {
 	}
 }
 
+func TestGetAndSet(t *testing.T) {
+	m := New()
+	elephant := Animal{"elephant"}
+	monkey := Animal{"monkey"}
+
+	if old, ok := m.SetAndGet("a", elephant); ok || old != nil {
+		t.Error("map should not contain a")
+	}
+	if old, ok := m.SetAndGet("a", monkey); !ok || old == nil {
+		t.Error("map should contain a")
+	}
+}
+
 func TestInsertAbsent(t *testing.T) {
 	m := New()
 	elephant := Animal{"elephant"}
@@ -133,10 +146,9 @@ func TestRemoveCb(t *testing.T) {
 	m.Set("elephant", elephant)
 
 	var (
-		mapKey string
-		mapVal interface{}
+		mapKey   string
+		mapVal   interface{}
 		wasFound bool
-
 	)
 	cb := func(key string, val interface{}, exists bool) bool {
 		mapKey = key
