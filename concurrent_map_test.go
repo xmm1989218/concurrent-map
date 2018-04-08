@@ -41,10 +41,10 @@ func TestGetAndSet(t *testing.T) {
 	elephant := Animal{"elephant"}
 	monkey := Animal{"monkey"}
 
-	if old, ok := m.SetAndGet("a", elephant); ok || old != nil {
+	if old, ok := m.GetAndSet("a", elephant); ok || old != nil {
 		t.Error("map should not contain a")
 	}
-	if old, ok := m.SetAndGet("a", monkey); !ok || old == nil {
+	if old, ok := m.GetAndSet("a", monkey); !ok || old == nil {
 		t.Error("map should contain a")
 	}
 }
