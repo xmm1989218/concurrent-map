@@ -51,7 +51,7 @@ func (m ConcurrentMap) Set(key string, value interface{}) {
 
 // Sets the given value under the specified key, and return old value.
 // If ok mean update, otherwise mean insert
-func (m ConcurrentMap) SetAndGet(key string, value interface{}) (interface{}, bool) {
+func (m ConcurrentMap) GetAndSet(key string, value interface{}) (interface{}, bool) {
 	// Get map shard.
 	shard := m.GetShard(key)
 	shard.Lock()
