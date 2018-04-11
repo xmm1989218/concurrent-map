@@ -91,6 +91,22 @@ func (m ConcurrentMap) SetIfAbsent(key string, value interface{}) bool {
 	return !ok
 }
 
+// Sets the given value under the specified key if no value was associated with it.
+func (m ConcurrentMap) SetIfNotExists(key string, value interface{}) (interface{}, bool) {
+	// Get map shard.
+	shard := m.GetShard(key)
+	shard.Lock()
+	val, ok := shard.items[key]
+	if !ok {
+		shard.items[key] = value
+	}
+	shard.Unlock()
+	if ok {
+		return val, !ok
+	}
+	return value, !ok
+}
+
 // Retrieves an element from map under given key.
 func (m ConcurrentMap) Get(key string) (interface{}, bool) {
 	// Get shard

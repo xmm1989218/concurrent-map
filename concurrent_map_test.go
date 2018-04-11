@@ -60,6 +60,20 @@ func TestInsertAbsent(t *testing.T) {
 	}
 }
 
+func TestInsertIfNotExists(t *testing.T) {
+	m := New()
+	elephant := Animal{"elephant"}
+	monkey := Animal{"monkey"}
+
+	m.SetIfNotExists("elephant", elephant)
+	if val, ok := m.SetIfNotExists("elephant", monkey); ok || val == monkey {
+		t.Error("map set a new value even the entry is already present")
+	}
+	if val, ok := m.SetIfNotExists("monkey", monkey); !ok || val != monkey {
+		t.Error("map set a new value even the entry is already present")
+	}
+}
+
 func TestGet(t *testing.T) {
 	m := New()
 
